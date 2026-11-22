@@ -1,4 +1,5 @@
 using UnityEngine;
+using GameAnalyticsSDK;
 
 public class ClickTarget : MonoBehaviour
 {
@@ -28,6 +29,14 @@ public class ClickTarget : MonoBehaviour
                     GameManager.Instance.OnTargetClick();
                     GameManager.Instance.RemovePoint();
                     Destroy(gameObject);
+
+                    GameAnalytics.NewDesignEvent("click:target_hit");
+                    GameAnalytics.NewDesignEvent("click:target_hit_total", GameManager.Instance.Clicks);
+                    GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "clicks", 1, "reward", "target_hit");
+                }
+                else
+                {
+                    GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "clicks", 1, "miss", "click");
                 }
             }
         }

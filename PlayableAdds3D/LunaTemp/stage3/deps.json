@@ -1,0 +1,19 @@
+{
+  "ignores": [],
+  "groups": [
+    [
+      "D:/GitHub/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/LunaTemp/stage3/processed-scripts/Assets/Scripts/ClickTarget.cs",
+      "D:/GitHub/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/LunaTemp/stage3/processed-scripts/Assets/Scripts/GameManager.cs",
+      "D:/GitHub/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/PlayableAdds3D/LunaTemp/stage3/processed-scripts/Assets/Scripts/SpawnManager.cs"
+    ],
+    [
+      "C:/Users/glezn/OneDrive/\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B/7.2.0/pipeline/templates/LunaCompiler/Scripts/Properties/AssemblyInfo.cs"
+    ],
+    [
+      "C:/Users/glezn/OneDrive/\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B/7.2.0/pipeline/templates/LunaCompiler/Scripts/Sources/OtherDummyScript.cs"
+    ],
+    [
+      "C:/Users/glezn/OneDrive/\u0420\u0430\u0431\u043E\u0447\u0438\u0439 \u0441\u0442\u043E\u043B/7.2.0/pipeline/templates/LunaCompiler/Scripts/obj/Debug/.NETFramework,Version=v4.7.AssemblyAttributes.cs"
+    ]
+  ]
+}

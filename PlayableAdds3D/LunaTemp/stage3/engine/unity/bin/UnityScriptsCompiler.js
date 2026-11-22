@@ -1,6 +1,6 @@
 if ( TRACE ) { TRACE( JSON.parse( '["ClickTarget#Awake","ClickTarget#Update","GameManager#init","GameManager#Awake","GameManager#Start","GameManager#Update","GameManager#EnterIntroScreen","GameManager#OnTargetClick","GameManager#AddPoint","GameManager#RemovePoint","GameManager#StartGamePlay","GameManager#StartSpawn","GameManager#StopSpawn","GameManager#EnterWinScreen","GameManager#EnterLoseScreen","SpawnManager#init","SpawnManager#StartSpawning","SpawnManager#StopSpawning","SpawnManager#Spawn"]' ) ); }
 /**
- * @version 1.0.9814.850
+ * @version 1.0.9822.33567
  * @copyright anton
  * @compiler Bridge.NET 17.9.42-luna
  */
@@ -44,6 +44,9 @@ if ( TRACE ) { TRACE( "ClickTarget#Update", this ); }
                             GameManager.Instance.OnTargetClick();
                             GameManager.Instance.RemovePoint();
                             UnityEngine.MonoBehaviour.Destroy(this.gameObject);
+
+                            pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewDesignEvent', null );
+                            pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewDesignEvent', null );
                         }
                     }
                 }
@@ -75,7 +78,7 @@ if ( TRACE ) { TRACE( "ClickTarget#Update", this ); }
             clicksToWin: 0,
             scoreToLose: 0,
             objectInScene: 0,
-            clicks: 0
+            Clicks: 0
         },
         ctors: {
             init: function () {
@@ -92,6 +95,7 @@ if ( TRACE ) { TRACE( "GameManager#init", this ); }
 if ( TRACE ) { TRACE( "GameManager#Awake", this ); }
 
                 GameManager.Instance = this;
+                pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.Initialize', null );
             },
             /*GameManager.Awake end.*/
 
@@ -109,6 +113,8 @@ if ( TRACE ) { TRACE( "GameManager#Update", this ); }
 
                 if (this.State === GameManager.GameState.Intro && UnityEngine.Input.GetMouseButtonDown(0)) {
                     this.StartGamePlay();
+
+                    pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewDesignEvent', null );
                 }
             },
             /*GameManager.Update end.*/
@@ -118,7 +124,7 @@ if ( TRACE ) { TRACE( "GameManager#Update", this ); }
 if ( TRACE ) { TRACE( "GameManager#EnterIntroScreen", this ); }
 
                 this.State = GameManager.GameState.Intro;
-                this.clicks = 0;
+                this.Clicks = 0;
                 if (UnityEngine.GameObject.op_Inequality(this.IntroScreen, null)) {
                     this.IntroScreen.SetActive(true);
                 }
@@ -138,11 +144,11 @@ if ( TRACE ) { TRACE( "GameManager#EnterIntroScreen", this ); }
             OnTargetClick: function () {
 if ( TRACE ) { TRACE( "GameManager#OnTargetClick", this ); }
 
-                this.clicks = (this.clicks + 1) | 0;
+                this.Clicks = (this.Clicks + 1) | 0;
 
-                this.clicksText.text = this.clicks + "/" + this.clicksToWin;
+                this.clicksText.text = this.Clicks + "/" + this.clicksToWin;
 
-                if (this.clicks >= this.clicksToWin) {
+                if (this.Clicks >= this.clicksToWin) {
                     this.EnterWinScreen();
                 }
             },
@@ -191,9 +197,11 @@ if ( TRACE ) { TRACE( "GameManager#StartGamePlay", this ); }
                 if (UnityEngine.GameObject.op_Inequality(this.LoseScreen, null)) {
                     this.LoseScreen.SetActive(false);
                 }
-                this.clicksText.text = this.clicks + "/" + this.clicksToWin;
+                this.clicksText.text = this.Clicks + "/" + this.clicksToWin;
                 this.counterText.text = "Objects:" + this.objectInScene + "/" + this.scoreToLose;
                 this.StartSpawn();
+
+                pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewProgressionEvent', null );
             },
             /*GameManager.StartGamePlay end.*/
 
@@ -235,6 +243,8 @@ if ( TRACE ) { TRACE( "GameManager#EnterWinScreen", this ); }
                     this.LoseScreen.SetActive(false);
                 }
                 this.StopSpawn();
+
+                pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewProgressionEvent', null );
             },
             /*GameManager.EnterWinScreen end.*/
 
@@ -256,6 +266,8 @@ if ( TRACE ) { TRACE( "GameManager#EnterLoseScreen", this ); }
                     this.LoseScreen.SetActive(true);
                 }
                 this.StopSpawn();
+
+                pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewProgressionEvent', null );
             },
             /*GameManager.EnterLoseScreen end.*/
 
@@ -379,13 +391,14 @@ if ( TRACE ) { TRACE( "SpawnManager#Spawn", this ); }
                                         continue;
                                 }
                                 case 4: {
-                                    $enumerator.current = null;
+                                    pc.stubProxy.reportMethod( 'GameAnalyticsSDK.GameAnalytics.NewErrorEvent', null );
+                                        $enumerator.current = null;
                                         $step = 5;
                                         return true;
                                 }
                                 case 5: {
-                                    $step = 6;
-                                    continue;
+                                    $step = 0;
+                                        continue;
                                 }
                                 case 6: {
                                     offsetX = this.spawnAreaSize.x / 2.0 + 0.001;
@@ -438,7 +451,7 @@ if ( TRACE ) { TRACE( "SpawnManager#Spawn", this ); }
     /*ClickTarget end.*/
 
     /*GameManager start.*/
-    $m("GameManager", function () { return {"nested":[GameManager.GameState],"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":2,"n":"AddPoint","t":8,"sn":"AddPoint","rt":$n[0].Void},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[0].Void},{"a":1,"n":"EnterIntroScreen","t":8,"sn":"EnterIntroScreen","rt":$n[0].Void},{"a":1,"n":"EnterLoseScreen","t":8,"sn":"EnterLoseScreen","rt":$n[0].Void},{"a":1,"n":"EnterWinScreen","t":8,"sn":"EnterWinScreen","rt":$n[0].Void},{"a":2,"n":"OnTargetClick","t":8,"sn":"OnTargetClick","rt":$n[0].Void},{"a":2,"n":"RemovePoint","t":8,"sn":"RemovePoint","rt":$n[0].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[0].Void},{"a":2,"n":"StartGamePlay","t":8,"sn":"StartGamePlay","rt":$n[0].Void},{"a":1,"n":"StartSpawn","t":8,"sn":"StartSpawn","rt":$n[0].Void},{"a":1,"n":"StopSpawn","t":8,"sn":"StopSpawn","rt":$n[0].Void},{"a":1,"n":"Update","t":8,"sn":"Update","rt":$n[0].Void},{"a":2,"n":"Instance","is":true,"t":16,"rt":GameManager,"g":{"a":2,"n":"get_Instance","t":8,"rt":GameManager,"fg":"Instance","is":true},"s":{"a":1,"n":"set_Instance","t":8,"p":[GameManager],"rt":$n[0].Void,"fs":"Instance","is":true},"fn":"Instance"},{"a":2,"n":"State","t":16,"rt":GameManager.GameState,"g":{"a":2,"n":"get_State","t":8,"rt":GameManager.GameState,"fg":"State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}},"s":{"a":1,"n":"set_State","t":8,"p":[GameManager.GameState],"rt":$n[0].Void,"fs":"State"},"fn":"State"},{"a":2,"n":"GameScreen","t":4,"rt":$n[1].GameObject,"sn":"GameScreen"},{"a":2,"n":"IntroScreen","t":4,"rt":$n[1].GameObject,"sn":"IntroScreen"},{"a":2,"n":"LoseScreen","t":4,"rt":$n[1].GameObject,"sn":"LoseScreen"},{"a":2,"n":"WinScreen","t":4,"rt":$n[1].GameObject,"sn":"WinScreen"},{"a":1,"n":"__Property__Initializer__State","t":4,"rt":GameManager.GameState,"sn":"__Property__Initializer__State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}},{"a":1,"n":"clicks","t":4,"rt":$n[0].Int32,"sn":"clicks","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"clicksText","t":4,"rt":$n[2].Text,"sn":"clicksText"},{"a":2,"n":"clicksToWin","t":4,"rt":$n[0].Int32,"sn":"clicksToWin","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"counterText","t":4,"rt":$n[2].Text,"sn":"counterText"},{"a":1,"n":"objectInScene","t":4,"rt":$n[0].Int32,"sn":"objectInScene","box":function ($v) { return Bridge.box($v, System.Int32);}},{"a":2,"n":"scoreToLose","t":4,"rt":$n[0].Int32,"sn":"scoreToLose","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"spawner","t":4,"rt":SpawnManager,"sn":"spawner"},{"a":1,"backing":true,"n":"<Instance>k__BackingField","is":true,"t":4,"rt":GameManager,"sn":"Instance"},{"a":1,"backing":true,"n":"<State>k__BackingField","t":4,"rt":GameManager.GameState,"sn":"State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}}]}; }, $n);
+    $m("GameManager", function () { return {"nested":[GameManager.GameState],"att":1048577,"a":2,"m":[{"a":2,"isSynthetic":true,"n":".ctor","t":1,"sn":"ctor"},{"a":2,"n":"AddPoint","t":8,"sn":"AddPoint","rt":$n[0].Void},{"a":1,"n":"Awake","t":8,"sn":"Awake","rt":$n[0].Void},{"a":1,"n":"EnterIntroScreen","t":8,"sn":"EnterIntroScreen","rt":$n[0].Void},{"a":1,"n":"EnterLoseScreen","t":8,"sn":"EnterLoseScreen","rt":$n[0].Void},{"a":1,"n":"EnterWinScreen","t":8,"sn":"EnterWinScreen","rt":$n[0].Void},{"a":2,"n":"OnTargetClick","t":8,"sn":"OnTargetClick","rt":$n[0].Void},{"a":2,"n":"RemovePoint","t":8,"sn":"RemovePoint","rt":$n[0].Void},{"a":1,"n":"Start","t":8,"sn":"Start","rt":$n[0].Void},{"a":2,"n":"StartGamePlay","t":8,"sn":"StartGamePlay","rt":$n[0].Void},{"a":1,"n":"StartSpawn","t":8,"sn":"StartSpawn","rt":$n[0].Void},{"a":1,"n":"StopSpawn","t":8,"sn":"StopSpawn","rt":$n[0].Void},{"a":1,"n":"Update","t":8,"sn":"Update","rt":$n[0].Void},{"a":2,"n":"Instance","is":true,"t":16,"rt":GameManager,"g":{"a":2,"n":"get_Instance","t":8,"rt":GameManager,"fg":"Instance","is":true},"s":{"a":1,"n":"set_Instance","t":8,"p":[GameManager],"rt":$n[0].Void,"fs":"Instance","is":true},"fn":"Instance"},{"a":2,"n":"State","t":16,"rt":GameManager.GameState,"g":{"a":2,"n":"get_State","t":8,"rt":GameManager.GameState,"fg":"State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}},"s":{"a":1,"n":"set_State","t":8,"p":[GameManager.GameState],"rt":$n[0].Void,"fs":"State"},"fn":"State"},{"a":2,"n":"Clicks","t":4,"rt":$n[0].Int32,"sn":"Clicks","box":function ($v) { return Bridge.box($v, System.Int32);}},{"a":2,"n":"GameScreen","t":4,"rt":$n[1].GameObject,"sn":"GameScreen"},{"a":2,"n":"IntroScreen","t":4,"rt":$n[1].GameObject,"sn":"IntroScreen"},{"a":2,"n":"LoseScreen","t":4,"rt":$n[1].GameObject,"sn":"LoseScreen"},{"a":2,"n":"WinScreen","t":4,"rt":$n[1].GameObject,"sn":"WinScreen"},{"a":1,"n":"__Property__Initializer__State","t":4,"rt":GameManager.GameState,"sn":"__Property__Initializer__State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"clicksText","t":4,"rt":$n[2].Text,"sn":"clicksText"},{"a":2,"n":"clicksToWin","t":4,"rt":$n[0].Int32,"sn":"clicksToWin","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"counterText","t":4,"rt":$n[2].Text,"sn":"counterText"},{"a":1,"n":"objectInScene","t":4,"rt":$n[0].Int32,"sn":"objectInScene","box":function ($v) { return Bridge.box($v, System.Int32);}},{"a":2,"n":"scoreToLose","t":4,"rt":$n[0].Int32,"sn":"scoreToLose","box":function ($v) { return Bridge.box($v, System.Int32);}},{"at":[new UnityEngine.SerializeFieldAttribute()],"a":1,"n":"spawner","t":4,"rt":SpawnManager,"sn":"spawner"},{"a":1,"backing":true,"n":"<Instance>k__BackingField","is":true,"t":4,"rt":GameManager,"sn":"Instance"},{"a":1,"backing":true,"n":"<State>k__BackingField","t":4,"rt":GameManager.GameState,"sn":"State","box":function ($v) { return Bridge.box($v, GameManager.GameState, System.Enum.toStringFn(GameManager.GameState));}}]}; }, $n);
     /*GameManager end.*/
 
     /*GameManager+GameState start.*/

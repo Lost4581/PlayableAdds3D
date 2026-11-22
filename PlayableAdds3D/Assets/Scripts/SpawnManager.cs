@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameAnalyticsSDK;
 using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
@@ -34,7 +35,12 @@ public class SpawnManager : MonoBehaviour
             int randomIndex = Random.Range(0, objects.Count);
             GameObject prefabToSpawn = objects[randomIndex];
 
-            if (prefabToSpawn == null) yield return null;
+            if (prefabToSpawn == null)
+            {
+                GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, "SpawnManager: prefab is null at index " + randomIndex);
+                yield return null;
+                continue;
+            }
 
             float offsetX = spawnAreaSize.x / 2f + 0.001f;
             float offsetZ = spawnAreaSize.z / 2f + 0.001f;

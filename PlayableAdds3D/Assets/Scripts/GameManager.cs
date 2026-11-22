@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using GameAnalyticsSDK;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,11 +24,12 @@ public class GameManager : MonoBehaviour
     public int scoreToLose = 10;
     private int objectInScene;
 
-    private int clicks;
+    public int Clicks;
 
     private void Awake()
     {
         Instance = this;
+        GameAnalytics.Initialize();
     }
 
     void Start()
@@ -37,13 +39,20 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        if (State == GameState.Intro && Input.GetMouseButtonDown(0)) StartGamePlay();
+        if (State == GameState.Intro && Input.GetMouseButtonDown(0))
+        {
+            StartGamePlay();
+
+            GameAnalytics.NewDesignEvent("game:start");
+        }
+
+        if (Input.GetKeyDown(KeyCode.E)) GameAnalytics.NewErrorEvent(GAErrorSeverity.Warning, "Manual test error");
     }
 
     void EnterIntroScreen()
     {
         State = GameState.Intro;
-        clicks = 0;
+        Clicks = 0;
         if (IntroScreen != null) IntroScreen.SetActive(true);
         if (GameScreen != null) GameScreen.SetActive(false);
         if (WinScreen != null) WinScreen.SetActive(false);
@@ -52,11 +61,11 @@ public class GameManager : MonoBehaviour
 
     public void OnTargetClick()
     {
-        clicks++;
+        Clicks++;
 
-        clicksText.text = clicks + "/" + clicksToWin;
+        clicksText.text = Clicks + "/" + clicksToWin;
 
-        if (clicks >= clicksToWin)
+        if (Clicks >= clicksToWin)
         {
             EnterWinScreen();
         }
@@ -86,9 +95,11 @@ public class GameManager : MonoBehaviour
         if (GameScreen != null) GameScreen.SetActive(true);
         if (WinScreen != null) WinScreen.SetActive(false);
         if (LoseScreen != null) LoseScreen.SetActive(false);
-        clicksText.text = clicks + "/" + clicksToWin;
+        clicksText.text = Clicks + "/" + clicksToWin;
         counterText.text = "Objects:" + objectInScene + "/" + scoreToLose;
         StartSpawn();
+
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Round");
     }
 
     private void StartSpawn() 
@@ -114,6 +125,8 @@ public class GameManager : MonoBehaviour
         if (WinScreen != null) WinScreen.SetActive(true);
         if (LoseScreen != null) LoseScreen.SetActive(false);
         StopSpawn();
+
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Complete, "Round", Clicks);
     }
 
     private void EnterLoseScreen()
@@ -124,5 +137,7 @@ public class GameManager : MonoBehaviour
         if (WinScreen != null) WinScreen.SetActive(false);
         if (LoseScreen != null) LoseScreen.SetActive(true);
         StopSpawn();
+
+        GameAnalytics.NewProgressionEvent(GAProgressionStatus.Fail, "Round", Clicks);
     }
 }
